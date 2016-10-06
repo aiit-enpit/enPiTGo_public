@@ -7,22 +7,20 @@ class ApplicationController < ActionController::Base
   before_action :logged_in?
 
   def make_slack_message(log)
-    msg = ""
-    msg += ':mega:' + log.team.name + ' '
-    msg += ':speech_balloon:' + log.message.subscription + ' '
-    if !log.mentor.nil?
-      msg += ':information_desk_person:' + log.mentor.name
-    end
-    msg += '[ふんいき]'
+    level = ''
     case log.level
     when 1 then
-      msg += ':confused:'
+      level = ':confused:'
     when 2 then
-      msg += ':cry:'
+      level = ':cry:'
     when 3 then
-      msg += ':sob:'
+      level = ':sob:'
     else
-      msg += ':cry:'
+      level = ':cry:'
+    end
+    msg = 'Help:mega:' + level + log.team.name + ':speech_balloon:' + log.message.subscription
+    if !log.mentor.nil?
+      msg += ':information_desk_person:' + log.mentor.name
     end
     return msg
   end
